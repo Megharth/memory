@@ -2,8 +2,60 @@
 
 @import "~milligram/dist/milligram";
 
+html, body {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
 .column > p {
     padding-top: 10ex;
     text-align: center;
 }
 
+.block {
+    background: #666666;
+    height: 100px;
+    width: 100px;
+    padding: 0;
+    border-color: black;
+    border: 0;
+    font-size: 32px;
+    transition: all 0.3s ease-out;
+}
+
+.block:hover {
+    transform: scale(1.1);
+    background: rgb(255, 174, 0);
+    border: 0;
+}
+
+.block:active, .block:focus, .valid {
+    background: #00ff88;
+    color: white;
+    border: 0;
+    box-shadow: 0 2px 4px #333333;
+}
+
+#board {
+    position: absolute;
+    top: 450px;
+    left: 50%;
+    height: 600px;
+    width: 500px;
+    transform: translate(-50%, -50%);
+    border: 1px solid black;
+    border-radius: 5px;
+    text-align: center;
+    padding: 20px;
+}
+
+.score {
+    display: inline-block;
+    padding: 10px;
+}
+
+#resetBtn {
+    margin-top: 20px;
+    transition: all 0.3s ease-out;
+}
