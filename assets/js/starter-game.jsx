@@ -12,11 +12,13 @@ class Starter extends React.Component {
     squares.sort((a,b) => 0.5 - Math.random())
     this.state = { 
       squares: squares,
+      squareVal: Array(16).fill(null),
       val: null,
       prevBlockIndex: null,
       goodGuess: 0,
       badGuess: 0,
-      score: 100
+      score: 100,
+      disabled: false
      };
   }
   
@@ -25,24 +27,45 @@ class Starter extends React.Component {
     return (
       <div className="column" key={index}>
       <Square
-          value={this.state.squares[index]}
+          value={this.state.squareVal[index]}
           root={this}
           id={index}
+          disabled={this.state.disabled}
         />
       </div>
     )
   }
 
-  setStateValue(val, id) {
-    this.setState({val: val, prevBlockIndex: id})
+  setStateValue(index) {
+    const val = this.state.squares[index]
+    const squareVal = this.state.squareVal
+    squareVal[index] = val
+    this.setState({ squareVal})
+    if (this.state.val !== null) {
+      const prevBlockIndex = this.state.prevBlockIndex
+      if (val === this.state.val) {
+        this.incrementGoodGuess()
+      }
+      else {
+        this.setState({disabled: true})
+        setTimeout(() => {
+          squareVal[index] = null
+          squareVal[prevBlockIndex] = null
+          this.incrementBadGuess(squareVal)
+        }, 1000)
+      }
+    }
+    else {
+      this.setState({ val: val, prevBlockIndex: index })
+    }
   }
 
-  incrementBadGuess() {
+  incrementBadGuess(squareVal) {
     let badGuess = this.state.badGuess
     badGuess++
     let score = this.state.score
     score = score - 5
-    this.setState({ badGuess, score, val:null, prevBlockIndex:null })
+    this.setState({ squareVal, badGuess, score, val:null, prevBlockIndex:null, disabled: false })
     if (score === 0) {
       alert("You have lost the game")
       this.resetGame()
@@ -116,34 +139,36 @@ function Square(props) {
     <button
       className="block"
       id={props.id}
-      onClick={
-        (ev) => {
-          if (ev.target.innerHTML === "") {
-            ev.target.innerText = props.value
-            let val = props.root.state.val
-            if (val === null)
-              props.root.setStateValue(props.value, props.id)
-            else {
-              let el = ev.target
-              let prevEl = document.getElementById(props.root.state.prevBlockIndex)
-              if (val !== props.value) {
-                let blocks = document.querySelectorAll(".block")
-                blocks.forEach(block => block.setAttribute("disabled", true))
-                props.root.incrementBadGuess()
-                setTimeout(() => {
-                  el.innerHTML = ""
-                  prevEl.innerHTML = ""
-                  blocks.forEach(block => block.removeAttribute("disabled"))
-                }, 1000)
-              } else {
-                props.root.incrementGoodGuess()
-                el.classList.add('valid')
-                prevEl.classList.add('valid')
-              }
-            }
-          }
-      }
-    }></button>
+      onClick={() => props.root.setStateValue(props.id)}
+      disabled={props.disabled}
+    >{props.value}</button>
   )
 }
+
+// (ev) => {
+//     if (ev.target.innerHTML === "") {
+//       ev.target.innerText = props.value
+//       let val = props.root.state.val
+//       if (val === null)
+//         props.root.setStateValue(props.value, props.id)
+//       else {
+//         let el = ev.target
+//         let prevEl = document.getElementById(props.root.state.prevBlockIndex)
+//         if (val !== props.value) {
+//           let blocks = document.querySelectorAll(".block")
+//           blocks.forEach(block => block.setAttribute("disabled", true))
+//           props.root.incrementBadGuess()
+//           setTimeout(() => {
+//             el.innerHTML = ""
+//             prevEl.innerHTML = ""
+//             blocks.forEach(block => block.removeAttribute("disabled"))
+//           }, 1000)
+//         } else {
+//           props.root.incrementGoodGuess()
+//           el.classList.add('valid')
+//           prevEl.classList.add('valid')
+//         }
+//       }
+//     }
+// }
 
