@@ -23,7 +23,7 @@ class Starter extends React.Component {
     
   renderSquare(index) {
     return (
-      <div className="column">
+      <div className="column" key={index}>
       <Square
           value={this.state.squares[index]}
           root={this}
@@ -42,7 +42,7 @@ class Starter extends React.Component {
     badGuess++
     let score = this.state.score
     score = score - 5
-    this.setState({ badGuess, score })
+    this.setState({ badGuess, score, val:null, prevBlockIndex:null })
     if (score === 0) {
       alert("You have lost the game")
       this.resetGame()
@@ -54,7 +54,7 @@ class Starter extends React.Component {
     goodGuess++
     let score = this.state.score
     score = score + 10
-    this.setState({ goodGuess, score })
+    this.setState({ goodGuess, score, val:null, prevBlockIndex:null })
     let blocks = [...document.querySelectorAll(".block")]
     let checkwin = blocks.filter(block => { if (block.innerHTML === "") return block })
     if (checkwin.length === 0) {
@@ -83,37 +83,24 @@ class Starter extends React.Component {
     })
   }
 
+  createGrid() {
+    let row = []
+    for (let i = 0; i < 4; i++) {
+      let col = []
+      for (let j = 0; j < 4; j++)
+        col.push(this.renderSquare((i*4)+j))
+      row.push(<div className="row" key={i}>{col}</div>)
+    }
+    return row
+  }
+
   render() {
     return (
       <div id="board">
         <h5 className="score">Bad Guess: {this.state.badGuess}</h5>
         <h5 className="score">Score: {this.state.score}</h5>
         <h5 className="score">Good Guess: {this.state.goodGuess}</h5>
-        <div className="row">
-          { this.renderSquare(0)}
-          { this.renderSquare(1)}
-          { this.renderSquare(2)}
-          { this.renderSquare(3)}
-        </div>
-        <div className="row">
-          { this.renderSquare(4)}
-          { this.renderSquare(5)}
-          { this.renderSquare(6)}
-          { this.renderSquare(7)}
-        </div>
-        <div className="row">
-          { this.renderSquare(8)}
-          { this.renderSquare(9)}
-          { this.renderSquare(10)}
-          { this.renderSquare(11)}
-
-        </div>
-        <div className="row">
-          { this.renderSquare(12)}
-          { this.renderSquare(13)}
-          { this.renderSquare(14)}
-          { this.renderSquare(15)}
-        </div>
+        {this.createGrid()}
         <button
           id="resetBtn"
           onClick={() => this.resetGame()}>Reset Game</button>
@@ -153,10 +140,10 @@ function Square(props) {
                 el.classList.add('valid')
                 prevEl.classList.add('valid')
               }
-              props.root.setStateValue(null)
             }
           }
       }
     }></button>
   )
 }
+
