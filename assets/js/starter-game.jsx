@@ -95,17 +95,13 @@ class Starter extends React.Component {
     squares.sort((a,b) => 0.5 - Math.random())
     this.setState({ 
       squares: squares,
+      squareVal: Array(16).fill(null),
       val: null,
       prevBlockIndex: null,
       goodGuess: 0,
       badGuess: 0,
       score: 100
     });
-    let blocks = document.querySelectorAll(".block")
-    blocks.forEach(block => {
-      block.innerHTML = ""
-      block.classList.remove('valid')
-    })
   }
 
   createGrid() {
@@ -146,31 +142,3 @@ function Square(props) {
     >{props.value}</button>
   )
 }
-
-// (ev) => {
-//     if (ev.target.innerHTML === "") {
-//       ev.target.innerText = props.value
-//       let val = props.root.state.val
-//       if (val === null)
-//         props.root.setStateValue(props.value, props.id)
-//       else {
-//         let el = ev.target
-//         let prevEl = document.getElementById(props.root.state.prevBlockIndex)
-//         if (val !== props.value) {
-//           let blocks = document.querySelectorAll(".block")
-//           blocks.forEach(block => block.setAttribute("disabled", true))
-//           props.root.incrementBadGuess()
-//           setTimeout(() => {
-//             el.innerHTML = ""
-//             prevEl.innerHTML = ""
-//             blocks.forEach(block => block.removeAttribute("disabled"))
-//           }, 1000)
-//         } else {
-//           props.root.incrementGoodGuess()
-//           el.classList.add('valid')
-//           prevEl.classList.add('valid')
-//         }
-//       }
-//     }
-// }
-
