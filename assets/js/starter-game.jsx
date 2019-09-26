@@ -39,24 +39,26 @@ class Starter extends React.Component {
   setStateValue(index) {
     const val = this.state.squares[index]
     const squareVal = this.state.squareVal
-    squareVal[index] = val
-    this.setState({ squareVal})
-    if (this.state.val !== null) {
-      const prevBlockIndex = this.state.prevBlockIndex
-      if (val === this.state.val) {
-        this.incrementGoodGuess()
+    if (squareVal[index] === null) {
+      squareVal[index] = val
+      this.setState({ squareVal})
+      if (this.state.val !== null) {
+        const prevBlockIndex = this.state.prevBlockIndex
+        if (val === this.state.val) {
+          this.incrementGoodGuess()
+        }
+        else {
+          this.setState({disabled: true})
+          setTimeout(() => {
+            squareVal[index] = null
+            squareVal[prevBlockIndex] = null
+            this.incrementBadGuess(squareVal)
+          }, 1000)
+        }
       }
       else {
-        this.setState({disabled: true})
-        setTimeout(() => {
-          squareVal[index] = null
-          squareVal[prevBlockIndex] = null
-          this.incrementBadGuess(squareVal)
-        }, 1000)
+        this.setState({ val: val, prevBlockIndex: index })
       }
-    }
-    else {
-      this.setState({ val: val, prevBlockIndex: index })
     }
   }
 
