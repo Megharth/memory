@@ -80,9 +80,9 @@ class Starter extends React.Component {
     let score = this.state.score
     score = score + 10
     this.setState({ goodGuess, score, val:null, prevBlockIndex:null })
-    let blocks = [...document.querySelectorAll(".block")]
-    let checkwin = blocks.filter(block => { if (block.innerHTML === "") return block })
-    if (checkwin.length === 0) {
+    let blocks = this.state.squareVal
+    let checkwin = blocks.indexOf(null)
+    if (checkwin === -1) {
       setTimeout(() => {
         alert("You have won the game! Game will now reset...")
         this.resetGame()
