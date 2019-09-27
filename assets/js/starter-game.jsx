@@ -36,38 +36,43 @@ class Starter extends React.Component {
     )
   }
 
-  setStateValue(index) {
+  displayValue(index) {
     const val = this.state.squares[index]
     const squareVal = this.state.squareVal
-    if (squareVal[index] === null) {
+    if (squareVal[index] === null) { 
       squareVal[index] = val
-      this.setState({ squareVal})
-      if (this.state.val !== null) {
-        const prevBlockIndex = this.state.prevBlockIndex
-        if (val === this.state.val) {
-          this.incrementGoodGuess()
-        }
-        else {
-          this.setState({disabled: true})
-          setTimeout(() => {
-            squareVal[index] = null
-            squareVal[prevBlockIndex] = null
-            this.incrementBadGuess(squareVal)
-          }, 1000)
-        }
-      }
-      else {
-        this.setState({ val: val, prevBlockIndex: index })
-      }
+      this.setState({ squareVal })
+      this.checkMatch(val, index)
     }
   }
 
-  incrementBadGuess(squareVal) {
+  checkMatch(val, index) {
+    if (this.state.val !== null) {
+      if (val === this.state.val) {
+        this.incrementGoodGuess()
+      }
+      else {
+        this.setState({disabled: true})
+        setTimeout(() => this.incrementBadGuess(index), 1000)
+      }
+    }
+    else {
+      this.setState({ val: val, prevBlockIndex: index })
+    }
+  }
+
+  incrementBadGuess(index) {
     let badGuess = this.state.badGuess
-    badGuess++
     let score = this.state.score
+    let squareVal = this.state.squareVal
+    const prevBlockIndex = this.state.prevBlockIndex
+
+    badGuess++
     score = score - 5
-    this.setState({ squareVal, badGuess, score, val:null, prevBlockIndex:null, disabled: false })
+    squareVal[index] = null
+    squareVal[prevBlockIndex] = null
+    
+    this.setState({ squareVal, badGuess, score, val: null, prevBlockIndex: null, disabled: false })
     if (score === 0) {
       alert("You have lost the game")
       this.resetGame()
@@ -76,10 +81,12 @@ class Starter extends React.Component {
 
   incrementGoodGuess() {
     let goodGuess = this.state.goodGuess
-    goodGuess++
     let score = this.state.score
+    
+    goodGuess++
     score = score + 10
     this.setState({ goodGuess, score, val:null, prevBlockIndex:null })
+    
     let blocks = this.state.squareVal
     let checkwin = blocks.indexOf(null)
     if (checkwin === -1) {
@@ -137,7 +144,7 @@ function Square(props) {
     <button
       className="block"
       id={props.id}
-      onClick={() => props.root.setStateValue(props.id)}
+      onClick={() => props.root.displayValue(props.id)}
       disabled={props.disabled}
     >{props.value}</button>
   )
