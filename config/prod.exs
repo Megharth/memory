@@ -14,7 +14,7 @@ config :memory, MemoryWeb.Endpoint,
   root: ".",
   version: Application.spec(:phoenix_distillery, :vsn),
   http: [:inet6, port: {:system, "PORT"}],
-  url: [host: "memory1.megharth.site", port: 80],
+  url: [host: "memory2.megharth.site", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
@@ -80,6 +80,7 @@ config :logger, level: :info
 # file or create a script for recreating it, since it's
 # kept out of version control and might be hard to recover
 # or recreate for your teammates (or yourself later on).
+File.mkdir_p!(Path.expand("~/.config"))
 path = Path.expand("~/.config/memory.secret")
 unless File.exists?(path) do
   secret = Base.encode16(:crypto.strong_rand_bytes(32))

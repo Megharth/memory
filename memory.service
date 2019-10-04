@@ -1,16 +1,16 @@
 [Unit]
-Description=Memory Game
+Description=Memory Game With Sockets
 
 [Service]
 Type=simple
-User=memory
-Group=memory
+User=memory-server
+Group=memory-server
 Restart=on-failure
-Environment=MIX_ENV=prod "PORT=4791"
+Environment=MIX_ENV=prod "PORT=4792"
 Environment=LANG=en_US.UTF-8
 
-WorkingDirectory=/home/memory/memory
-ExecStart=bash /home/memory/memory/start.sh
+WorkingDirectory=/home/memory-server/memory
+ExecStart=bash /home/memory-server/memory/start.sh
 
 [Install]
 WantedBy=multi-user.target
