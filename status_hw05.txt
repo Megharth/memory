@@ -12,17 +12,18 @@ https://github.com/Megharth/memory
 
 
 3. What's the URL that you deployed to?
-memory1.megharth.site
+memory2.megharth.site
 
 
 
-4. Is your game functionality complete? If not, what's missing?
-Yes. Also, the conditions for win and lose are handled.
+4. Is your game functionality complete, with the appropriate logic implemented
+as server-side elixir code? If not, what's missing?
+Yes. All the functionality are implemented on server side.
 
 
 
 5. Is your game properly deployed? If not, what went wrong?
-Yes.
+Yes, game is deployed properly.
 
 
 
@@ -37,3 +38,5 @@ And here's a list of tasks for grading comments. Just leave this here:
  - AA
  - BB
  - CC
+
+
